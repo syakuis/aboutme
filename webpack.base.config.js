@@ -38,19 +38,41 @@ module.exports = (env = {
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'src/index.html'
-      })/*,
+      }),
       function() {
         const contents = glob.sync('./src/contents/*.md')
+        /*
+          [
+            { title: '', file: '', date: ''},
+          ]
+         */
+        let data = [];
 
         for (const i in contents) {
           const content = contents[i]
           const dirname = path.dirname(content)
-          const filename = path.basename(content, '.md');
-          console.log(content, dirname, filename);
-          const data = fs.readFileSync(content, 'utf8');
-          fs.writeFileSync(`${dirname}/${filename}.html`, markdown.toHTML(data), 'utf8');
+          const filename = path.basename(content, '.md')
+          const regex = /^\[([0-9]{14})\](.*)/g
+          if (!regex.test(filename)) {
+            continue;
+          }
+          const date = filename.replace(regex,'$1')
+          const title = filename.replace(regex,'$2')
+          data.push({title, filename, date})
         }
-      }*/
+
+        data.sort(function (a, b) {
+          if (a.date > b.date) {
+            return 1;
+          }
+          if (a.date < b.date) {
+            return -1;
+          }
+          return 0;
+        });
+
+        fs.writeFileSync('src/data.json', JSON.stringify(data, null, 2), 'utf8');
+      }
     ],
     module: {
       rules: [

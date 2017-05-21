@@ -4,14 +4,14 @@ import { Link } from 'react-router';
 
 import './blog.css';
 
-import info from '../info.json';
-
 const propTypes = {
   content: PropTypes.node,
+  info: PropTypes.object,
 };
 
 const defaultProps = {
   content: '',
+  info: {},
 };
 
 const Blog = props => (
@@ -20,7 +20,7 @@ const Blog = props => (
       <div className="container">
         <nav className="blog-nav">
           {
-            info.menu.map((menu, i) => (
+            props.info.menu.map((menu, i) => (
               <Link
                 key={`idx_${i}`}
                 className="blog-nav-item active"
@@ -41,20 +41,13 @@ const Blog = props => (
       <div className="row">
 
         <div className="col-sm-8 blog-main">
-
-          <div className="blog-post">
-            <h2 className="blog-post-title">Another blog post</h2>
-            <p className="blog-post-meta">December 23, 2013 by <a href="">Jacob</a></p>
-
-            {props.content}
-          </div>
-
+          {props.content}
         </div>
 
         <div className="col-sm-3 col-sm-offset-1 blog-sidebar">
           <div className="sidebar-module sidebar-module-inset">
             <h4>About</h4>
-            <p>{info.profile}</p>
+            <p>{props.info.profile}</p>
           </div>
           <div className="sidebar-module">
             <h4>Archives</h4>

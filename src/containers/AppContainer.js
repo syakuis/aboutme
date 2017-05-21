@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Blog from '../layouts/Blog';
+import Layout from '../layouts/blog';
+import info from '../info.json';
 
 const propTypes = {
   children: PropTypes.node,
@@ -12,7 +13,7 @@ const defaultProps = {
 };
 
 const AppContainer = props => (
-  <Blog content={props.children} />
+  <Layout content={props.children} info={info} />
 );
 
 AppContainer.propTypes = propTypes;

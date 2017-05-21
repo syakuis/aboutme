@@ -6,13 +6,13 @@ import { markdown } from 'markdown';
 
 const propTypes = {
   params: PropTypes.shape({
-    content: PropTypes.string.isRequired,
+    content: PropTypes.string,
   }),
 };
 
 const defaultProps = {
   params: {
-    content: null,
+    content: 'aboutme',
   },
 };
 
@@ -28,7 +28,15 @@ class ContentContainer extends Component {
       loading: true,
     };
 
-    System.import(`../contents/${props.params.content}.md`).then((module) => {
+    this.setContent(props.params.content || 'aboutme');
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.setContent(nextProps.params.content || 'aboutme');
+  }
+
+  setContent(content) {
+    System.import(`../contents/${content}.md`).then((module) => {
       axios.get(module).then((res) => {
         this.setState({
           loading: false,
